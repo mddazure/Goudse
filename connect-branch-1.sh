@@ -18,19 +18,19 @@ az network vpn-site create --name branch1 -g Goudse --ip-address $vnetgwtunnelip
 # az network vpn-site link add --name branch1-2 -g Goudse --ip-address $vnetgwtunnelip2 --site-name onprem1 --asn $vnetgwasn --bgp-peering-address $vnetgwbgpip2 --link-speed 100
 
 echo "# VWAN: Create connection - remote site link to hub gw"
-az network vpn-gateway connection create --gateway-name 29f39501b78545a29959db3200deca31-swedencentral-gw --name branch-1-connection  -g Goudse --remote-vpn-site branch1 --shared-key $sharedkey --enable-bgp true --no-wait
+az network vpn-gateway connection create --gateway-name hub-0-vpn --name branch-1-connection  -g Goudse --remote-vpn-site branch1 --shared-key $sharedkey --enable-bgp true --no-wait
 
 echo "# VWAN: Get parameters from VWAN Hub GW"
-hubgwtunneladdress1=$(az network vpn-gateway show --name 29f39501b78545a29959db3200deca31-swedencentral-gw  -g Goudse --query "bgpSettings.bgpPeeringAddresses[?ipconfigurationId == 'Instance0'].tunnelIpAddresses[0]" --output tsv)
+hubgwtunneladdress1=$(az network vpn-gateway show --name hub-0-vpn  -g Goudse --query "bgpSettings.bgpPeeringAddresses[?ipconfigurationId == 'Instance0'].tunnelIpAddresses[0]" --output tsv)
 echo "Hub GW Tunnel address:" $hubgwtunneladdress1
-hubgwbgpaddress1=$(az network vpn-gateway show --name 29f39501b78545a29959db3200deca31-swedencentral-gw  -g Goudse --query "bgpSettings.bgpPeeringAddresses[?ipconfigurationId == 'Instance0'].defaultBgpIpAddresses" --output tsv)
+hubgwbgpaddress1=$(az network vpn-gateway show --name hub-0-vpn  -g Goudse --query "bgpSettings.bgpPeeringAddresses[?ipconfigurationId == 'Instance0'].defaultBgpIpAddresses" --output tsv)
 echo "Hub GW BGP address:" $hubgwbgpaddress1
-hubgwtunneladdress2=$(az network vpn-gateway show --name 29f39501b78545a29959db3200deca31-swedencentral-gw  -g Goudse --query "bgpSettings.bgpPeeringAddresses[?ipconfigurationId == 'Instance1'].tunnelIpAddresses[0]" --output tsv)
+hubgwtunneladdress2=$(az network vpn-gateway show --name hub-0-vpn  -g Goudse --query "bgpSettings.bgpPeeringAddresses[?ipconfigurationId == 'Instance1'].tunnelIpAddresses[0]" --output tsv)
 echo "Hub GW Tunnel address2:" $hubgwtunneladdress2
-hubgwbgpaddress2=$(az network vpn-gateway show --name 29f39501b78545a29959db3200deca31-swedencentral-gw  -g Goudse --query "bgpSettings.bgpPeeringAddresses[?ipconfigurationId == 'Instance1'].defaultBgpIpAddresses" --output tsv)
+hubgwbgpaddress2=$(az network vpn-gateway show --name hub-0-vpn  -g Goudse --query "bgpSettings.bgpPeeringAddresses[?ipconfigurationId == 'Instance1'].defaultBgpIpAddresses" --output tsv)
 echo "Hub GW BGP address2:" $hubgwbgpaddress2
 
-hubgwasn=$(az network vpn-gateway show --name 29f39501b78545a29959db3200deca31-swedencentral-gw  -g Goudse --query "bgpSettings.asn" --output tsv)
+hubgwasn=$(az network vpn-gateway show --name hub-0-vpn  -g Goudse --query "bgpSettings.asn" --output tsv)
 echo "Hub GW BGP ASN:" $hubgwasn
 
 echo "# create local network gateway"
